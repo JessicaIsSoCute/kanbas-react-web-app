@@ -266,8 +266,7 @@ export default function Lab1() {
             Please
             <a href="https://www.lipsum.com">click here</a>
             to get dummy text<br/>
-            <a href="https://github.com/JessicaIsSoCute/kanbas-react-web-app">my github repo</a>
-            {/* copy rest of form elements here  */}
+            <a id="wd-github" href="https://github.com/JessicaIsSoCute/kanbas-react-web-app">my github repo</a>
           </form>
         </div>
       </div>
