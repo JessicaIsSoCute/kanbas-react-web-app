@@ -1,8 +1,13 @@
 import React from "react";
 import { FaFileImport, FaFileExport, FaCog } from "react-icons/fa";
 import { CiFilter } from "react-icons/ci";
+import { useParams } from "react-router";
+import { assignments, enrollments, users, grades } from "../../Database";
 
 export default function Grades() {
+  const { cid } = useParams();
+  const courseAssignments = assignments.filter(a => a.course === cid);
+  const courseEnrollments = enrollments.filter(e => e.course === cid);
   return (
     <div className="container">
       <button className="btn btn-secondary float-end">
@@ -39,70 +44,27 @@ export default function Grades() {
             <thead>
               <tr>
                 <th scope="col" className="fs-6 fw-normal" style={{width: "20%"}}>Student Name</th>
-                <th scope="col" className="fs-6 fw-normal text-center" style={{width: "20%"}}>
-                  A1 SETUP<br />
-                  Out of 100
-                </th>
-                <th scope="col" className="fs-6 fw-normal text-center" style={{width: "20%"}}>
-                  A2 HTML<br />
-                  Out of 100
-                </th>
-                <th scope="col" className="fs-6 fw-normal text-center" style={{width: "20%"}}>
-                  A3 CSS<br />
-                  Out of 100
-                </th>
-                <th scope="col" className="fs-6 fw-normal text-center" style={{width: "20%"}}>
-                  A4 BOOTSTRAP<br />
-                  Out of 100
-                </th>
+                {courseAssignments.map(assignment => (
+                  <th scope="col" className="fs-6 fw-normal text-center" style={{width: "20%"}}>
+                    {assignment._id} - {assignment.title}<br />
+                    Out of {assignment.points}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row" className="text-danger">Jane Adams</th>
-                <td className="text-center">100%</td>
-                <td className="text-center">100%</td>
-                <td className="text-center">
-                  <input type="percentile" value="100%" className="form-control text-center" />
-                </td>
-                <td className="text-center">100%</td>
-              </tr>
-              <tr>
-                <th scope="row" className="text-danger">Han Bao</th>
-                <td className="text-center">100%</td>
-                <td className="text-center">100%</td>
-                <td className="text-center">
-                  <input type="percentile" value="100%" className="form-control text-center" />
-                </td>
-                <td className="text-center">100%</td>
-              </tr>
-              <tr>
-                <th scope="row" className="text-danger">Joe Biden</th>
-                <td className="text-center">100%</td>
-                <td className="text-center">100%</td>
-                <td className="text-center">
-                  <input type="percentile" value="100%" className="form-control text-center" />
-                </td>
-                <td className="text-center">100%</td>
-              </tr>
-              <tr>
-                <th scope="row" className="text-danger">Harry Potter</th>
-                <td className="text-center">100%</td>
-                <td className="text-center">100%</td>
-                <td className="text-center">
-                  <input type="percentile" value="100%" className="form-control text-center" />
-                </td>
-                <td className="text-center">100%</td>
-              </tr>
-              <tr>
-                <th scope="row" className="text-danger">Shou Chew</th>
-                <td className="text-center">100%</td>
-                <td className="text-center">100%</td>
-                <td className="text-center">
-                  <input type="percentile" value="100%" className="form-control text-center" />
-                </td>
-                <td className="text-center">100%</td>
-              </tr>
+              {courseEnrollments.map(enrollment => {
+                let user = users.find(u => u._id === enrollment.user)
+                return (
+                  <tr>
+                    <th scope="row" className="text-danger">{user?.firstName} {user?.lastName}</th>
+                    {courseAssignments.map(assignment => {
+                      let grade = grades.find(g => g.student === user?._id && g.assignment === assignment._id)
+                      return (<td className="text-center">{grade?.grade}</td>);
+                    })}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
