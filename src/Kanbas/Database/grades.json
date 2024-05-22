@@ -70,5 +70,41 @@
         "student": "126",
         "assignment": "A202",
         "grade": "80"
+    },
+    {
+        "_id": "13",
+        "student": "121",
+        "assignment": "A301",
+        "grade": "80"
+    },
+    {
+        "_id": "14",
+        "student": "124",
+        "assignment": "A301",
+        "grade": "81"
+    },
+    {
+        "_id": "15",
+        "student": "127",
+        "assignment": "A301",
+        "grade": "82"
+    },
+    {
+        "_id": "16",
+        "student": "124",
+        "assignment": "A302",
+        "grade": "82"
+    },
+    {
+        "_id": "17",
+        "student": "121",
+        "assignment": "A302",
+        "grade": "81"
+    },
+    {
+        "_id": "18",
+        "student": "127",
+        "assignment": "A302",
+        "grade": "80"
     }
 ]
