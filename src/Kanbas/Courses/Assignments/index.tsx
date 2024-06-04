@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import { assignments } from "../../Database";
 import { BsGripVertical } from "react-icons/bs"
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
@@ -8,12 +7,15 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import AssignmentsControls from "./AssignmentsControls";
 import AssignmentControlButtons from "./AssignmentControlButtons";
+import { deleteAssignment } from "./reducer";
+import { useSelector, useDispatch } from "react-redux";
 export default function Assignments() {
   const { cid } = useParams();
-  const courseAssignments = assignments.filter(assignment => assignment.course === cid);
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const dispatch = useDispatch();
   return (
     <div id="wd-assignments">
-      <AssignmentsControls />
+      <AssignmentsControls cid={cid!}/>
       <ul id="wd-assignments" className="list-group rounded-0 my-2">
         <div className="wd-title p-3 ps-2 bg-secondary">
           <BsGripVertical className="fs-4" />
@@ -24,7 +26,7 @@ export default function Assignments() {
           <span className="badge rounded-pill float-end text-dark border border-secondary">40% of Total</span>
         </div>
         <ul id="wd-assignment-list" className="list-group rounded-0">
-          {courseAssignments.map(assignment => (
+          {assignments.filter((assignment: any) => assignment.course === cid).map((assignment: any) => (
             <li className="wd-assignment-list-item list-group-item p-3" style={{borderLeft: "5px solid green"}}>
               <div className="row align-items-center">
                 <div className="col-1">
@@ -42,7 +44,7 @@ export default function Assignments() {
                   <p><span className="text-danger">Multiple Modules</span> | <b>Not available until</b> {assignment.available_from} at 12:00am | <b>Due</b> {assignment.due_date} at 11:59pm | {assignment.points} pts</p>
                 </div>
                 <div className="col float-end">
-                  <AssignmentControlButtons />
+                  <AssignmentControlButtons assignmentId={assignment._id} deleteAssignment={assignmentId => dispatch(deleteAssignment(assignmentId))} />
                 </div>
               </div>
             </li>
