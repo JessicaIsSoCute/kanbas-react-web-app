@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BsGripVertical } from "react-icons/bs"
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -7,12 +7,24 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import AssignmentsControls from "./AssignmentsControls";
 import AssignmentControlButtons from "./AssignmentControlButtons";
-import { deleteAssignment } from "./reducer";
+import { deleteAssignment, setAssignments } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
+import * as client from "./client";
 export default function Assignments() {
   const { cid } = useParams();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
   const dispatch = useDispatch();
+  const fetchAssignments = async () => {
+    const modules = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(modules));
+  };
+  const removeAssignment = async (moduleId: string) => {
+    await client.deleteAssignment(moduleId);
+    dispatch(deleteAssignment(moduleId));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
   return (
     <div id="wd-assignments">
       <AssignmentsControls cid={cid!}/>
@@ -44,7 +56,7 @@ export default function Assignments() {
                   <p><span className="text-danger">Multiple Modules</span> | <b>Not available until</b> {assignment.available_from} at 12:00am | <b>Due</b> {assignment.due_date} at 11:59pm | {assignment.points} pts</p>
                 </div>
                 <div className="col float-end">
-                  <AssignmentControlButtons assignmentId={assignment._id} deleteAssignment={assignmentId => dispatch(deleteAssignment(assignmentId))} />
+                  <AssignmentControlButtons assignmentId={assignment._id} deleteAssignment={assignmentId => removeAssignment(assignmentId)} />
                 </div>
               </div>
             </li>
