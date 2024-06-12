@@ -44,7 +44,7 @@ export default function Grades() {
             <thead>
               <tr>
                 <th scope="col" className="fs-6 fw-normal" style={{width: "20%"}}>Student Name</th>
-                {courseAssignments.map(assignment => (
+                {courseAssignments.map((assignment: any) => (
                   <th scope="col" className="fs-6 fw-normal text-center" style={{width: "20%"}}>
                     {assignment._id} - {assignment.title}<br />
                     Out of {assignment.points}
@@ -54,11 +54,11 @@ export default function Grades() {
             </thead>
             <tbody>
               {courseEnrollments.map(enrollment => {
-                let user = users.find(u => u._id === enrollment.user)
+                let user = users.find((u: any) => u._id === enrollment.user) as any
                 return (
                   <tr>
                     <th scope="row" className="text-danger">{user?.firstName} {user?.lastName}</th>
-                    {courseAssignments.map(assignment => {
+                    {courseAssignments.map((assignment: any) => {
                       let grade = grades.find(g => g.student === user?._id && g.assignment === assignment._id)
                       return (<td className="text-center">{grade?.grade}</td>);
                     })}
