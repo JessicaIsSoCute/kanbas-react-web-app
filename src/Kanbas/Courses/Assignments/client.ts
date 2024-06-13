@@ -8,7 +8,7 @@ export const deleteAssignment = async (assignmentId: string) => {
   return response.data;
 };
 export const createAssignment = async (courseId: string, assignment: any) => {
-  const response = await axios.post( `${COURSES_API}/${courseId}/assignments`, assignment );
+  const response = await axios.post( `${COURSES_API}/${courseId}/assignments`, {...assignment, _id: new Date().getTime().toString()} );
   return response.data;
 };
 export const findAssignmentsForCourse = async (courseId: string) => {
